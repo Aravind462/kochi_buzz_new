@@ -16,16 +16,14 @@ export const sequelizeConfig = new Sequelize({
   },
 });
 
-// Function to test the connection
-export const connectDB = async () => {
-  console.log("Hello");
-  
-  try {
-    await sequelizeConfig.authenticate();
-    console.log("✅ Database connected successfully.");
-  } catch (error) {
-    console.error("❌ Unable to connect to the database:", error);
-  }
-};
+// // Function to test the connection
+// export const connectDB = async () => {
+//   try {
+//     await sequelizeConfig.authenticate();
+//     console.log("✅ Database connected successfully.");
+//   } catch (error) {
+//     console.error("❌ Unable to connect to the database:", error);
+//   }
+// };
 
-connectDB();
+// connectDB();

@@ -8,10 +8,10 @@ export interface IEvent extends IBaseAttributes {
     to_date: Date,
     to_time: string,
     venue: string,
-    location: string,
+    longitude: number,
+    latitude: number,
     category: string,
     price: number,
     organizer_id: number,
     status: string,
-    reports?: Array<{ report: string, user_id: number }>
 }

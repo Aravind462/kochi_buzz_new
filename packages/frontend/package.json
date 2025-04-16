@@ -69,6 +69,7 @@
     "date-fns": "^3.6.0",
     "input-otp": "^1.2.3",
     "lucide-react": "^0.358.0",
+    "mappls-web-maps": "^3.5.8",
     "mime-types": "^2.1.35",
     "next-themes": "^0.3.0",
     "react-day-picker": "^8.10.1",

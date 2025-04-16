@@ -7,22 +7,24 @@ import { IEvent } from '@repo/types/lib/schema/event'
 
 const EventCard: React.FC<{ data: IEvent }> = ({ data }) => {
   return (
-    <Card className='shadow-lg'>
-        <CardHeader>
-            <CardTitle className='flex justify-between items-center'>
-                <p className='text-2xl'>{data?.title}</p>
-                <Badge variant="secondary">{data?.category}</Badge>
+    <Card className="flex flex-col justify-between h-full shadow-lg">
+        <CardHeader className="min-h-[100px]">
+            <CardTitle className="flex justify-between items-center">
+                <p className="text-2xl">{data?.title}</p>
+                <Badge variant="secondary" className="w-min">{data?.category}</Badge>
             </CardTitle>
         </CardHeader>
-        <CardContent>
-            <p>Date: {data?.date ? new Date(data.date).toLocaleDateString("en-GB") : "N/A"}</p>
-            <p>Venue: {data?.location}</p>
+        <CardContent className="flex-grow">
+            <p>Date: {data?.from_date ? new Date(data.from_date).toLocaleDateString("en-GB") : "N/A"}</p>
+            <p>Venue: {data?.venue}</p>
             <p>Price: {data?.price}</p>
         </CardContent>
         <CardFooter>
-            <Link href={`/event/${data.id}`}><Button>View Details</Button></Link>
+            <Link href={`/event/${data.id}`}>
+                <Button>View Details</Button>
+            </Link>
         </CardFooter>
-    </Card>
+      </Card>
   )
 }
 

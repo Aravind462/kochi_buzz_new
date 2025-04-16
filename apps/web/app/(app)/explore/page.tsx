@@ -27,7 +27,7 @@ const page: React.FC = () => {
           filter: {
             title: { contains: search },
             category: filter.category?{ in: filter.category }: undefined,
-            date: filter.date?{ eq: filter.date }: undefined,
+            from_date: filter.date?{ eq: filter.date }: undefined,
             location: filter.location?{ eq: filter.location }: undefined,
             price: (filter.minPrice || filter.maxPrice)?{
               gte: filter.minPrice,
@@ -49,7 +49,9 @@ const page: React.FC = () => {
 
   return (
     <div className='flex my-10 min-h-screen'>
-      <Sidebar setFilter={setFilter} />
+      <div className='w-1/4'>
+        <Sidebar setFilter={setFilter} />
+      </div>
       <div className='flex-grow me-10'>
         <div className='flex mx-10'>
           <Input value={search} onChange={(e)=>setSearch(e.target.value)} type='text' placeholder='Search events' className='me-1 bg-white' />

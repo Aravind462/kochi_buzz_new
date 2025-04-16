@@ -37,8 +37,12 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: false
       },
-      location: {
-        type: Sequelize.STRING,
+      longitude: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
+      latitude: {
+        type: Sequelize.INTEGER,
         allowNull: false
       },
       category: {
@@ -63,11 +67,7 @@ module.exports = {
         type: Sequelize.ENUM('Pending', 'Accepted', 'Rejected'),
         allowNull: false,
         defaultValue: 'Pending'
-      },
-      reports: {
-        type: Sequelize.JSON,
-        allowNull: true
-      },
+      }
     });
   },
   async down(queryInterface, Sequelize) {

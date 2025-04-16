@@ -17,6 +17,10 @@ class EventService {
     return eventRepository.getById(id);
   }
 
+  async getNearby(data: { latitude: number; longitude: number }): Promise<IEvent| null> {
+    return eventRepository.getNearby(data);
+  }
+
   async update(id: number, data: IEvent): Promise<IEvent | null> {
     return eventRepository.update(id, data);
   }

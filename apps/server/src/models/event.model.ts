@@ -6,6 +6,7 @@ import { UserModel } from './user.model';
 import { IEvent } from '@repo/types/lib/schema/event';
 
 export class EventModel extends Model<IEvent> implements IEvent {
+  public id!: number;
   public title!: string;
   public description!: string;
   public from_date!: Date;
@@ -13,12 +14,12 @@ export class EventModel extends Model<IEvent> implements IEvent {
   public to_date!: Date;
   public to_time!: string;
   public venue!: string;
-  public location!: string;
+  public longitude!: number;
+  public latitude!: number;
   public category!: string;
   public price!: number;
   public organizer_id!: number;
   public status!: string;
-  public reports!: Array<{ report: string, user_id: number }>;
 }
 
 EventModel.init({
@@ -56,8 +57,12 @@ EventModel.init({
     type: DataTypes.TEXT,
     allowNull: false
   },
-  location: {
-    type: DataTypes.STRING,
+  longitude: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  latitude: {
+    type: DataTypes.INTEGER,
     allowNull: false
   },
   category: {
@@ -80,11 +85,6 @@ EventModel.init({
     type: DataTypes.ENUM('Pending', 'Accepted', 'Rejected'),
     allowNull: false,
     defaultValue: 'Pending'
-  },
-  reports: {
-    type: DataTypes.JSON,
-    allowNull: false,
-    defaultValue: []
   }
 }, {
   sequelize: sequelizeConfig,

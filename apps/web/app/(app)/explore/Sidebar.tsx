@@ -36,7 +36,11 @@ const Sidebar: React.FC<SidebarProps> = ({ setFilter }) => {
     
     const locationOptions = [
         "Kakkanad", "Edappally", "Vyttila", "Kadavanthra", "Fort Kochi", "Marine Drive", "Palarivattom",
-        "MG Road", "Panampilly Nagar", "Thevara", "Thrippunithura", "Aluva"
+        "MG Road", "Panampilly Nagar", "Thevara", "Thrippunithura", "Aluva", "Kaloor", "Ernakulam North",
+        "Ernakulam South", "Petta", "Kacheripady", "Mattancherry", "Willingdon Island", "Bolgatty Island",
+        "Cherai", "Thammanam", "Elamakkara", "Vennala", "Tripunithura", "Chittethukara", "InfoPark",
+        "Seaport-Airport Road", "Kundannoor", "Maradu", "Eroor", "Kumbalam", "Manjummel", "HMT Colony",
+        "Changampuzha Park","Ponekkara", "Jawahar Nagar", "Pachalam", "Mulavukad"
     ];
 
     const onSubmit = (data: Filter) => {
@@ -45,7 +49,7 @@ const Sidebar: React.FC<SidebarProps> = ({ setFilter }) => {
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col w-max mt-5 px-10'>
+        <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col w-full mt-5 px-10'>
             {/* Category */}
             <div>
                 <h1 className='font-semibold text-xl'>Category</h1>

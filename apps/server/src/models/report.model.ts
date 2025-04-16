@@ -5,13 +5,9 @@ import { Model, DataTypes } from 'sequelize';
 import { UserModel } from './user.model';
 import { EventModel } from './event.model';
 
-export class EventSubscriptionModel extends Model {
-  public id!: number;
-  public event_id!: number;
-  public user_id!: number;
-}
+export class ReportModel extends Model {}
 
-EventSubscriptionModel.init({
+ReportModel.init({
   id: {
     allowNull: false,
     autoIncrement: true,
@@ -33,10 +29,13 @@ EventSubscriptionModel.init({
       model: EventModel,
       key: 'id'
     }
+  },
+  report: {
+    type: DataTypes.TEXT
   }
 }, {
   sequelize: sequelizeConfig,
-  tableName: 'event_subscriptions',
+  tableName: 'reports',
   underscored: true,
   timestamps: false
 });

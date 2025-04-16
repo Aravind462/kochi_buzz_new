@@ -6,22 +6,21 @@ import {
   getData,
 } from "@repo/backend/lib/utils/sequelize/sequelizeUtils";
 import { MakeNullishOptional } from "sequelize/types/utils";
-import { literal, Sequelize, Transaction } from "sequelize";
+import { Transaction } from "sequelize";
 import { NotFoundError } from "@repo/backend/lib/errors/NotFoundError";
-import { IEvent } from "@repo/types/lib/schema/event";
-import { EventModel } from "../models/event.model";
-import { EventSubscriptionModel } from "../models/eventSubscription.model";
+import { IReport } from "@repo/types/lib/schema/report";
+import { ReportModel } from "../models/report.model";
 
-class EventRepository implements IBaseRepository<IEvent> {
-  protected model = EventModel;
+class ReportRepository implements IBaseRepository<IReport> {
+  protected model = ReportModel;
 
-  async create(data: IEvent): Promise<IEvent> {
+  async create(data: IReport): Promise<IReport> {
     const transaction: Transaction = await this.model.sequelize!.transaction();
     try {
       const operation = await this.model.create(
         {
           ...data,
-        } as MakeNullishOptional<IEvent>,
+        } as MakeNullishOptional<IReport>,
         {
           transaction,
         }
@@ -29,14 +28,14 @@ class EventRepository implements IBaseRepository<IEvent> {
 
       await transaction.commit();
 
-      return getData(operation) as IEvent;
+      return getData(operation) as IReport;
     } catch (error) {
       await transaction.rollback();
       throw error;
     }
   }
   
-  async getAll<R = IEvent>(
+  async getAll<R = IReport>(
     queryParams: Omit<IQueryStringParams, "cursor">
   ): Promise<R[]> {
     console.log(queryParams);
@@ -50,41 +49,13 @@ class EventRepository implements IBaseRepository<IEvent> {
     return getDataArray(response);
   }
 
-  async getById<R = IEvent>(id: number): Promise<R | null> {
+  async getById<R = IReport>(id: number): Promise<R | null> {
     const response = await this.model.findByPk(id);
     if (!response) return null;
     return getData(response);
   }
 
-  async getNearby<R = IEvent[]>(
-    data: { latitude: number; longitude: number },
-    radiusInKm = 10
-  ): Promise<R> {
-    const { latitude, longitude } = data;
-
-    const events = await this.model.findAll({
-      where: literal(`
-        ST_Distance_Sphere(
-          point(longitude, latitude),
-          point(${longitude}, ${latitude})
-        ) <= ${radiusInKm * 1000}
-      `),
-      order: [
-        literal(`
-          ST_Distance_Sphere(
-            point(longitude, latitude),
-            point(${longitude}, ${latitude})
-          )
-        `),
-      ],
-      limit: 50,
-    });
-
-    return events as R;
-  }
-
-
-  async update(id: number, data: IEvent): Promise<IEvent | null> {
+  async update(id: number, data: IReport): Promise<IReport | null> {
     const transaction: Transaction = await this.model.sequelize!.transaction();
 
     try {
@@ -131,4 +102,4 @@ class EventRepository implements IBaseRepository<IEvent> {
   } 
 }
 
-export const eventRepository = Object.freeze(new EventRepository());
+export const reportRepository = Object.freeze(new ReportRepository());

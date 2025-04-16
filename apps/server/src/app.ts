@@ -17,6 +17,14 @@ import { clientTimeZoneMiddleware } from "@repo/backend/lib/middleware/clientTim
 
 import swaggerSpec from "./swagger/swaggerSpec";
 import { defineAssociation } from "./models/defineAssociation";
+import cron from "node-cron";
+import { sendReminderNotifications } from "./cron/reminder"; // update path if needed
+
+// Run every hour at minute 0 (e.g., 1:00, 2:00, etc.)
+cron.schedule("0 * * * *", async () => {
+  console.log("⏰ Running reminder notification job...");
+  await sendReminderNotifications();
+});
 
 const allowList =
   process.env.ALLOWED_IP_LIST?.split(",").map((ip) => ip.trim()) || [];
