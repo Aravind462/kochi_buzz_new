@@ -14,20 +14,16 @@ import { UserModel } from "../models/user.model";
 class UserRepository implements IBaseRepository<IUser, number> {
   protected model = UserModel;
 
-//   async getAll<R = IUser>(
-//     queryParams: Omit<IQueryStringParams, "cursor">
-//   ): Promise<R[]> {
-//     const sequelizeQuery = generateSequelizeQuery(queryParams);
-//     const response = await this.model.findAll({
-//       ...sequelizeQuery,
-//       include: {
-//         model: UserEventModel,
-//         as: "columns",
-//       },
-//     });
+  async getAll<R = IUser>(
+    queryParams: Omit<IQueryStringParams, "cursor">
+  ): Promise<R[]> {
+    const sequelizeQuery = generateSequelizeQuery(queryParams);
+    const response = await this.model.findAll({
+      ...sequelizeQuery,
+    });
 
-//     return getDataArray(response);
-//   }
+    return getDataArray(response);
+  }
 
   async getById<R = IUser>(id: number): Promise<R | null> {
     const response = await this.model.findByPk(id);

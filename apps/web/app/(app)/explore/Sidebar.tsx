@@ -30,8 +30,8 @@ const Sidebar: React.FC<SidebarProps> = ({ setFilter }) => {
 
     const categoryOptions = [
         "Conference & Seminars", "Workshops & Training", "Meetups & Networking", "Concerts & Live Music",
-        "Cultural & Festivals", "Sports & Fitness", "Exhibitions & Expos", "Food & Drink Events",
-        "Theatre & Comedy", "Nightlife & Parties"
+        "Cultural & Festivals", "Sports & Fitness", "Exhibitions & Expos", "Food & Drinks",
+        "Theatre & Comedy", "Nightlife & Party"
     ];
     
     const locationOptions = [

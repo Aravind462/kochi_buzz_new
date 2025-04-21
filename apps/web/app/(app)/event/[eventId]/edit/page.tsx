@@ -8,19 +8,22 @@ import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from '@
 import { eventServices } from '../../../../../services/eventServices';
 import { IEvent } from '@repo/types/lib/schema/event';
 import { useRouter, useParams } from 'next/navigation';
+import Map from '@repo/frontend/components/Map';
 
 const Page = () => {
   const router = useRouter();
   const { eventId } = useParams(); // Get event ID from URL
   const [loading, setLoading] = useState(true);
 
-  const { register, handleSubmit, formState: { errors }, control, setValue } = useForm<IEvent>();
+  const { register, handleSubmit, formState: { errors }, control, setValue, watch } = useForm<IEvent>();
 
   useEffect(() => {
     // Fetch existing event data
     const fetchEvent = async () => {
       try {
         const event = await eventServices.getById(eventId as string);
+        console.log(event);
+        
         if (event) {
           Object.keys(event).forEach((key) => {
             setValue(key as keyof IEvent, event[key as keyof IEvent]);
@@ -47,6 +50,9 @@ const Page = () => {
       console.log(err);
     }
   };
+
+  const longitude = watch("longitude");
+  const latitude = watch("latitude");
 
   if (loading) return <p className="text-center mt-10">Loading...</p>;
 
@@ -90,18 +96,27 @@ const Page = () => {
             {(errors.to_date || errors.to_time) && <p className='text-red-600 text-xs mt-2'>Both date and time are required.</p>}
           </div>
 
-          {/* Location */}
+          {/* Venue */}
           <div className='mb-4'>
+            <label className='block mb-1'>Venue</label>
+            <Input {...register("venue", { required: "Required" })} type="text" className='w-full px-3 py-2 border rounded-md' />
+            {errors.venue && <p className='text-red-600 text-xs mt-2'>{errors.venue.message}</p>}
+          </div>
+
+          {/* Location */}
+          {/* <div className='mb-4'>
             <label className='block mb-1'>Location</label>
             <Input {...register("location", { required: "Required" })} type="text" className='w-full px-3 py-2 border rounded-md' />
             {errors.location && <p className='text-red-600 text-xs mt-2'>{errors.location.message}</p>}
-          </div>
+          </div> */}
 
-          {/* Venue */}
-          <div className='mb-4'>
-            <label className='block mb-1'>Venue (GPS Location)</label>
-            <Input {...register("venue", { required: "Required" })} type="text" className='w-full px-3 py-2 border rounded-md' />
-            {errors.venue && <p className='text-red-600 text-xs mt-2'>{errors.venue.message}</p>}
+          {/* Map */}
+          <div className='my-4'>
+            <label className='block mb-1'>Location</label>
+            <Map setLatLng={({ latitude, longitude }: any) => {
+                setValue("latitude", latitude);
+                setValue("longitude", longitude);
+              }} lat={latitude} lng={longitude} />
           </div>
 
           {/* Category */}

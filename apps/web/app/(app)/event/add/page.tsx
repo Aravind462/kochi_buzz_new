@@ -10,6 +10,7 @@ import { IEvent } from '@repo/types/lib/schema/event';
 import { useUser } from '../../../../providers/UserContext';
 import { useRouter } from 'next/navigation';
 import Map from '@repo/frontend/components/Map'
+import { Textarea } from '@repo/frontend/components/ui/textarea';
 
 const AddEventPage = () => {
   const router = useRouter();
@@ -107,7 +108,7 @@ const AddEventPage = () => {
           {/* Description */}
           <div className='mb-4'>
             <label className='block mb-1'>Description</label>
-              <textarea {...register("description", { required: "Required" })} rows={3} className='w-full px-3 py-2 border rounded-md'></textarea>
+              <Textarea {...register("description", { required: "Required" })} rows={3} className='w-full px-3 py-2 border rounded-md'></Textarea>
             {errors.description && <p className='text-red-600 text-xs'>{errors.description.message}</p>}
           </div>
 
@@ -164,6 +165,7 @@ const AddEventPage = () => {
 
           {/* Map */}
           <div className='my-4'>
+            <label className='block mb-1'>Location</label>
             <Map eLoc={eLoc}  setLatLng={({ latitude, longitude }: any) => {
                 setValue("latitude", latitude);
                 setValue("longitude", longitude);
@@ -186,14 +188,14 @@ const AddEventPage = () => {
                   <SelectContent>
                     <SelectItem value="Conference & Seminars">Conference & Seminars</SelectItem>  
                     <SelectItem value="Workshops & Training">Workshops & Training</SelectItem>
-                    <SelectItem value="Meetup & Networking">Meetups & Networking</SelectItem>
-                    <SelectItem value="Concert & Live Music">Concerts & Live Music</SelectItem>
-                    <SelectItem value="Cultural & Festival">Cultural & Festivals</SelectItem>
+                    <SelectItem value="Meetups & Networking">Meetups & Networking</SelectItem>
+                    <SelectItem value="Concerts & Live Music">Concerts & Live Music</SelectItem>
+                    <SelectItem value="Cultural & Festivals">Cultural & Festivals</SelectItem>
                     <SelectItem value="Sports & Fitness">Sports & Fitness</SelectItem>
-                    <SelectItem value="Exhibition & Expos">Exhibitions & Expos</SelectItem>
-                    <SelectItem value="Food & Drinks">Food & Drink Events</SelectItem>
+                    <SelectItem value="Exhibition & Expos">Exhibition & Expos</SelectItem>
+                    <SelectItem value="Food & Drinks">Food & Drinks</SelectItem>
                     <SelectItem value="Theatre & Comedy">Theatre & Comedy</SelectItem>
-                    <SelectItem value="Nightlife & Party">Nightlife & Parties</SelectItem>
+                    <SelectItem value="Nightlife & Party">Nightlife & Party</SelectItem>
                   </SelectContent>
                 </Select>
               )}

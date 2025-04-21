@@ -8,6 +8,22 @@ class EventServices extends AbstractServices<IEvent> {
     super("/events");
   }
 
+  getNearbyEvents = async (data: { latitude: number, longitude: number }): Promise<IEvent[]> => {
+    console.log(data);
+    
+    try {
+      const response = await this.http.post<IAPIV1Response<IEvent[]>>("/nearby", data);
+
+      if (response.data.success) {
+        return response.data.data;
+      } else {
+        throw new APIError(response.data as IAPIV1Response);
+      }
+    } catch (error) {
+      throw this.apiError(error);
+    }
+  };
+
   getAllEvents = async (params?: Record<string, any>): Promise<IEvent[]> => {
     try {
       const response = await this.http.get<IAPIV1Response<IEvent[]>>("/", { params });

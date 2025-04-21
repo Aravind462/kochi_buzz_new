@@ -58,7 +58,7 @@ class EventRepository implements IBaseRepository<IEvent> {
 
   async getNearby<R = IEvent[]>(
     data: { latitude: number; longitude: number },
-    radiusInKm = 10
+    radiusInKm = 20
   ): Promise<R> {
     const { latitude, longitude } = data;
 
@@ -80,6 +80,8 @@ class EventRepository implements IBaseRepository<IEvent> {
       limit: 50,
     });
 
+    console.log(events);
+    
     return events as R;
   }
 

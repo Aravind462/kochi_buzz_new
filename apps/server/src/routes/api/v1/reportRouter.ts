@@ -5,16 +5,16 @@ import { authenticateUser, authorizeRole } from "../../../middleware/authMiddlew
 
 const reportRouter = Router();
 
-reportRouter.post('/', authenticateUser, authorizeRole(["organizer", "admin"]), reportController.create);
+reportRouter.post('/', authenticateUser, reportController.create);
 
-reportRouter.get('/', reportController.getAll);
+reportRouter.get('/', jsonParseQueryParamsMiddleware, reportController.getAll);
 
-reportRouter.get('/:id', reportController.getById);
+// reportRouter.get('/:id', reportController.getById);
 
-reportRouter.put('/:id', authenticateUser, authorizeRole(["user", "organizer", "admin"]), reportController.update);
+// reportRouter.put('/:id', authenticateUser, authorizeRole(["user", "organizer", "admin"]), reportController.update);
 
-reportRouter.delete('/:id', authenticateUser, authorizeRole(["organizer", "admin"]), reportController.delete);
+// reportRouter.delete('/:id', authenticateUser, authorizeRole(["organizer", "admin"]), reportController.delete);
 
-reportRouter.put('/:id/status', authenticateUser, authorizeRole(["admin"]), reportController.update);
+// reportRouter.put('/:id/status', authenticateUser, authorizeRole(["admin"]), reportController.update);
 
 export { reportRouter }

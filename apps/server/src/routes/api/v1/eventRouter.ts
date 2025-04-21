@@ -10,6 +10,8 @@ eventRouter.post('/', authenticateUser, authorizeRole(["organizer", "admin"]), e
 
 eventRouter.get('/', eventController.getAll);
 
+eventRouter.post('/nearby', eventController.getNearby);
+
 eventRouter.get('/subscriptions', eventSubscriptionController.getAll);
 
 eventRouter.get('/:id', eventController.getById);

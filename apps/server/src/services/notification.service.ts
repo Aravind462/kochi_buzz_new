@@ -7,6 +7,10 @@ class NotificationService {
     return notificationRepository.create(data);
   }
 
+  async bulkCreate(data: INotification[]): Promise<INotification[]> {
+    return notificationRepository.bulkCreate(data);
+  }
+
   async getAll(query: IQueryStringParams): Promise<INotification[]> {
     return notificationRepository.getAll(query);
   }

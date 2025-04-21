@@ -43,6 +43,7 @@ class EventController implements ICRUDController<IEvent | null | void> {
     ParsedQs,
     Record<string, any>
   > = async (req, res) => {    
+
     const data = await eventService.getNearby(req.body);
     return res.json(v1Response(data));
   };

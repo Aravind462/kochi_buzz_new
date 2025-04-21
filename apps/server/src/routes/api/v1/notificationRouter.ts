@@ -5,13 +5,15 @@ import { authenticateUser, authorizeRole } from "../../../middleware/authMiddlew
 
 const notificationRouter = Router();
 
+notificationRouter.post('/bulk', authenticateUser, authorizeRole(["admin"]), notificationController.bulkCreate)
+
 // notificationRouter.post('/', authenticateUser, authorizeRole(["organizer", "admin"]), notificationController.create);
 
-// notificationRouter.get('/', jsonParseQueryParamsMiddleware, notificationController.getAll);
+notificationRouter.get('/', jsonParseQueryParamsMiddleware, notificationController.getAll);
 
 // notificationRouter.get('/:id', notificationController.getById);
 
-// notificationRouter.put('/:id', authenticateUser, authorizeRole(["user", "organizer", "admin"]), notificationController.update);
+notificationRouter.put('/:id', authenticateUser, authorizeRole(["user", "organizer", "admin"]), notificationController.update);
 
 // notificationRouter.delete('/:id', authenticateUser, authorizeRole(["organizer", "admin"]), notificationController.delete);
 

@@ -28,7 +28,7 @@ export async function sendReminderNotifications() {
         where: {
           user_id: sub.user_id,
           event_id: event.id,
-          type: "reminder",
+          type: "Reminder",
         },
       });
 
@@ -36,7 +36,7 @@ export async function sendReminderNotifications() {
         notifications.push({
           user_id: sub.user_id,
           event_id: event.id,
-          type: "reminder",
+          type: "Reminder",
           is_read: false,
           created_at: new Date(),
         });

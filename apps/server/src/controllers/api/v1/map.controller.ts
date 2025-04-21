@@ -6,8 +6,8 @@ import { v1Response } from "@repo/backend/lib/utils/responseHandler";
 import { mapService } from "../../../services/map.service";
 import { ParsedQs } from "qs";
 
-class MapController implements ICRUDController<any> {
-
+class MapController  {
+  
   geocode: RequestHandler = async(req, res) => {
     const address = req.query.address as string;
     const authHeader = req.headers['authorization'];

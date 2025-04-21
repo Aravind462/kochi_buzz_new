@@ -8,9 +8,9 @@ class UserService implements IBaseServices<IUser | null> {
 //     return userRepository.create(data);
 //   }
 
-//   async getAll(query: IQueryStringParams): Promise<IUser[]> {
-//     return userRepository.getAll(query);
-//   }
+  async getAll(query: IQueryStringParams): Promise<IUser[]> {
+    return userRepository.getAll(query);
+  }
 
   async getById(id: number): Promise<IUser | null> {
     return userRepository.getById(id);

@@ -6,12 +6,18 @@ import { eventServices } from '../../../services/eventServices';
 import { IEvent } from '@repo/types/lib/schema/event';
 import { FaCheck, FaTimes, FaTrash } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
+import { notificationServices } from '../../../services/notificationServices';
+import { userServices } from '../../../services/userServices';
+import { INotification } from '@repo/types/lib/schema/notification';
+import { reportServices } from '../../../services/reportServices';
+import { IReport } from '@repo/types/lib/schema/report';
 
 const AdminPanel: React.FC = () => {
   const router = useRouter();
   const [pendingEvents, setPendingEvents] = useState<IEvent[]>([]);
   const [reportedEvents, setReportedEvents] = useState<IEvent[]>([]);
   const [loading, setLoading] = useState(true);
+  const [reports, setReports] = useState<IReport[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,15 +31,20 @@ const AdminPanel: React.FC = () => {
         });
         console.log(pending);
         
-        const reported = await eventServices.getAllEvents({
-          query: {
-            filter: {
-              "reports.0": { exists: true }
+        const response = await reportServices.getAll();
+        setReports(response);
+
+        if(response.length > 0) {
+          const reported = await eventServices.getAllEvents({
+            query: {
+              filter: {
+                id: { in: response.map(report=>report.event_id) }
+              }
             }
-          }
-        });
+          });
+          setReportedEvents(reported);
+        }
         setPendingEvents(pending);
-        setReportedEvents(reported);
       } catch (error) {
         console.error('Error fetching admin data:', error);
       } finally {
@@ -46,8 +57,26 @@ const AdminPanel: React.FC = () => {
 
   const handleApprove = async (eventId: string) => {
     try {
-      await eventServices.update(eventId, { status: 'Accepted' });
-      setPendingEvents((prev) => prev.filter((event) => event.id.toString() !== eventId));
+      const eventResponse = await eventServices.update(eventId, { status: 'Accepted' });
+      const userResponse = await userServices.getAll({
+        filter: {
+          role: { eq: 'user' }
+        }
+      })
+      console.log(eventResponse);
+      
+      if(eventResponse) {
+        setPendingEvents((prev) => prev.filter((event) => event.id.toString() !== eventId));
+        if (userResponse) {
+          const notifications = userResponse.map((user) => ({
+            user_id: user.id as number,
+            event_id: Number(eventId),
+            type: "New Event"
+          }));
+          const response = await notificationServices.bulkCreate(notifications);
+          console.log(response);
+        }
+      }
     } catch (error) {
       console.error('Error approving event:', error);
     }
@@ -84,11 +113,11 @@ const AdminPanel: React.FC = () => {
           <p className="text-gray-500">No pending events</p>
         ) : (
           <div className="space-y-4">
-            {pendingEvents.map((event) => (
+            {pendingEvents?.map((event) => (
               <div key={event.id} className="p-4 border rounded-lg flex justify-between items-center hover:bg-gray-100" onClick={()=>router.push(`/event/${event.id}`)}>
                 <div>
                   <h3 className="font-semibold">{event.title}</h3>
-                  <p className="text-sm text-gray-600">{event.location} | {event.from_date.toString()}</p>
+                  <p className="text-sm text-gray-600">{event.venue} | {event.from_date.toString()}</p>
                 </div>
                 <div className="flex space-x-2">
                   <Button className='bg-green-600' onClick={(e) => {
@@ -117,14 +146,14 @@ const AdminPanel: React.FC = () => {
           <p className="text-gray-500">No reported events</p>
         ) : (
           <div className="space-y-4">
-            {reportedEvents.map((event) => (
+            {reportedEvents?.map((event) => (
               <div key={event.id} className="p-4 border rounded-lg flex justify-between items-center hover:bg-gray-100" onClick={()=>router.push(`/event/${event.id}`)}>
                 <div>
                   <h3 className="font-semibold">{event.title}</h3>
-                  <p className="text-sm text-gray-600">{event.location} | {event.from_date.toString()}</p>
+                  <p className="text-sm text-gray-600">{event.venue} | {event.from_date.toString()}</p>
                   {
-                    event.reports.map(report => (
-                      <p className="text-sm text-red-500">Reported for: {report.report}, by: {report.user_id}</p>
+                    reports.filter(report => report.event_id === event.id).map(report=>(
+                      <p key={report.id} className="text-sm text-red-500">Reported for: {report.report}, by: {report.user_id}</p>
                     ))
                   }
                   

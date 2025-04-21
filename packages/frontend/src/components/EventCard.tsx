@@ -11,7 +11,7 @@ const EventCard: React.FC<{ data: IEvent }> = ({ data }) => {
         <CardHeader className="min-h-[100px]">
             <CardTitle className="flex justify-between items-center">
                 <p className="text-2xl">{data?.title}</p>
-                <Badge variant="secondary" className="w-min">{data?.category}</Badge>
+                <Badge variant="secondary" className="w-min line-clamp-2 break-words">{data?.category}</Badge>
             </CardTitle>
         </CardHeader>
         <CardContent className="flex-grow">

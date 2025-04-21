@@ -9,11 +9,8 @@ import { useUser } from "../../../../providers/UserContext";
 
 const Page = () => {
   const [activeTab, setActiveTab] = useState<"Accepted" | "Pending" | "Rejected">("Accepted");
-
   const [eventData, setEventData] = useState<IEvent[]>([]);
-
   const { user } = useUser();
-
   const router = useRouter();
 
   useEffect(() => {
@@ -71,7 +68,7 @@ const Page = () => {
                 <tr key={event.id} className="border-b hover:bg-gray-100" onClick={()=>router.push(`/event/${event.id}`)}>
                   <td className="p-3">{event.title}</td>
                   <td className="p-3">{event.from_date.toString()}</td>
-                  <td className="p-3">{event.location}</td>
+                  <td className="p-3">{event.venue}</td>
                 </tr>
               ))}
             </tbody>

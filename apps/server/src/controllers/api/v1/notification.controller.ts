@@ -13,6 +13,11 @@ class NotificationController implements ICRUDController<INotification | null | v
     return res.json(v1Response(data));
   }
 
+  bulkCreate: RequestHandler = async (req, res) => {
+    const data = await notificationService.bulkCreate(req.body);
+    return res.json(v1Response(data));
+  }
+
   getAll: RequestHandler<
     ParamsDictionary,
     IAPIResponse<INotification[]>,

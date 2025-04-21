@@ -15,6 +15,8 @@ import { IUser } from "@repo/types/lib/schema/user";
 import { eventSubscriptionService } from "../../../../services/eventSubscriptionServices";
 import { useUser } from "../../../../providers/UserContext";
 import ReportModal from "./ReportModal";
+import Map from "@repo/frontend/components/Map"
+import { reportServices } from "../../../../services/reportServices";
 
 const EventDetailsPage = () => {
   const router = useRouter();
@@ -84,25 +86,20 @@ const EventDetailsPage = () => {
   const handleReportSubmit = async (data: string) => {
     try {
       const newReport = {
-        report: data,
         user_id: user.id,
+        event_id: eventData.id,
+        report: data
       };
-      // Fetch the current event data to preserve existing reports
-      const event = await eventServices.getById(eventData.id.toString());
-      console.log(event);
-      
-  
-      const updatedReports = Array.isArray(event.reports) ? [...event.reports, newReport] : [newReport];
-
-      console.log(updatedReports);
-      
-  
-      await eventServices.update(eventData.id.toString(), { reports: updatedReports });
+      await reportServices.create(newReport);
       alert("Report submitted successfully");
     } catch (error) {
       console.error("Error submitting report", error);
     }
   };
+
+  const isUser = true;
+
+  if(!eventData?.id) return <div className="h-screen text-center text-3xl pt-10">Loading....</div>
 
   return (
     <div className="flex flex-col justify-center items-center">
@@ -129,8 +126,15 @@ const EventDetailsPage = () => {
         </div>
 
         <div className="flex justify-between border-b pb-2">
+          <p className="font-medium text-gray-700">Venue:</p>
+          <p className="text-gray-600">{eventData?.venue}</p>
+        </div>
+
+        <div className="pb-2">
           <p className="font-medium text-gray-700">Location:</p>
-          <p className="text-gray-600">{eventData?.location}</p>
+          <div className="mt-3">
+            <Map lat={eventData?.latitude} lng={eventData?.longitude} isUser={isUser} />
+          </div>
         </div>
 
         {/* {eventData?.venue && (

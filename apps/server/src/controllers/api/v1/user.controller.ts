@@ -13,15 +13,15 @@ interface AuthenticatedRequest extends Request {
 }
 
 class UserController implements ICRUDController<IUser | null> {
-//   getAll: RequestHandler<
-//     ParamsDictionary,
-//     IAPIResponse<IUser[]>,
-//     unknown,
-//     { query: IQueryStringParams }
-//   > = async (req, res) => {
-//     const data = await userService.getAll(req.query.query);
-//     return res.json(v1Response(data));
-//   };
+  getAll: RequestHandler<
+    ParamsDictionary,
+    IAPIResponse<IUser[]>,
+    unknown,
+    { query: IQueryStringParams }
+  > = async (req, res) => {
+    const data = await userService.getAll(req.query.query);
+    return res.json(v1Response(data));
+  };
 
   getById: RequestHandler<
     { id: string } & ParamsDictionary,
