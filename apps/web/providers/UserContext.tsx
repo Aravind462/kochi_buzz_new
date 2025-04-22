@@ -7,12 +7,14 @@ import { userServices } from "../services/userServices";
 interface UserContextType {
   user: IUser | null;
   setUser: (user: IUser | null) => void;
+  loading: boolean;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<IUser | null>();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getCurrentUser = async () => {
@@ -21,6 +23,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         setUser(data);
       } catch(error) {
         console.error("Error while fetching current user data", error);
+      } finally {
+        setLoading(false);
       }
     }
     
@@ -28,7 +32,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser, loading }}>
       {children}
     </UserContext.Provider>
   );
