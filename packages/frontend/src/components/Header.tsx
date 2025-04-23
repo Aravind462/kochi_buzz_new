@@ -104,14 +104,14 @@ const Header: React.FC = () => {
       <div>
         <img src="https://cdn-icons-png.flaticon.com/128/16462/16462118.png" className='w-14 ms-5' alt="" />
       </div>
-      <div className='flex justify-center text-xl items-center mt-1'>
+      <div className='flex justify-center text-xl font-medium items-center mt-1'>
         <Link href="/" className="px-2 text-gray-700 hover:text-black">Home</Link>
         <Link href="/explore" className="px-2 text-gray-700 hover:text-black">Explore</Link>
 
         {/* Only organizers and admins can see 'Add Event' */}
-        {(role === "organizer" || role === "admin") && (
+        {/* {(role === "organizer" || role === "admin") && (
           <Link href="/event/add" className="px-2 text-gray-700 hover:text-black">Add Event</Link>
-        )}
+        )} */}
         {/* Only organizers and admins can see 'Manage Events' */}
         {(role === "organizer" || role === "admin") && (
           <Link href="/event/manage" className="px-2 text-gray-700 hover:text-black">Manage Events</Link>

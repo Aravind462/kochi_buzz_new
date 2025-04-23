@@ -9,6 +9,8 @@ import { eventServices } from '../../../../../services/eventServices';
 import { IEvent } from '@repo/types/lib/schema/event';
 import { useRouter, useParams } from 'next/navigation';
 import Map from '@repo/frontend/components/Map';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { eventSchema } from '@repo/shared/src/validationSchemas/event';
 
 const Page = () => {
   const router = useRouter();
@@ -17,7 +19,9 @@ const Page = () => {
   const [suggestions, setSuggestions] = useState<any[]>([]);
   const [isFocused, setIsFocused] = useState(false);
   const [eLoc, setELoc] = useState();
-  const { register, handleSubmit, formState: { errors }, control, setValue, watch } = useForm<IEvent>();
+  const { register, handleSubmit, formState: { errors }, control, setValue, watch } = useForm<IEvent>({
+    resolver: zodResolver(eventSchema)
+  });
 
   useEffect(() => {
     // Fetch existing event data
@@ -128,7 +132,11 @@ const Page = () => {
               <Input {...register("from_date", { required: "Required" })} type="date" className='w-1/2 px-3 py-2 border rounded-md' />
               <Input {...register("from_time", { required: "Required" })} type="time" className='w-1/2 px-3 py-2 border rounded-md' />
             </div>
-            {(errors.from_date || errors.from_time) && <p className='text-red-600 text-xs mt-2'>Both date and time are required.</p>}
+            <div className='flex space-x-1'>
+              {errors.from_date && <p className='text-red-600 text-xs mt-2'>{ errors.from_date.message }</p>}
+              {(errors.from_date && errors.from_time) && <p className='text-red-600 text-xs mt-2'>&</p>}
+              {errors.from_time && <p className='text-red-600 text-xs mt-2'>{ errors.from_time.message }</p>}
+            </div>
           </div>
 
           {/* To Date & Time */}
@@ -138,7 +146,11 @@ const Page = () => {
               <Input {...register("to_date", { required: "Required" })} type="date" className='w-1/2 px-3 py-2 border rounded-md' />
               <Input {...register("to_time", { required: "Required" })} type="time" className='w-1/2 px-3 py-2 border rounded-md' />
             </div>
-            {(errors.to_date || errors.to_time) && <p className='text-red-600 text-xs mt-2'>Both date and time are required.</p>}
+            <div className='flex space-x-1'>
+              {errors.to_date && <p className='text-red-600 text-xs mt-2'>{ errors.to_date.message }</p>}
+              {(errors.to_date && errors.to_time) && <p className='text-red-600 text-xs mt-2'>&</p>}
+              {errors.to_time && <p className='text-red-600 text-xs mt-2'>{ errors.to_time.message }</p>}
+            </div>
           </div>
 
           {/* Venue */}
@@ -225,7 +237,7 @@ const Page = () => {
           {/* Submit Button */}
           <div className='mt-5'>
             <Button className='w-full py-2 text-base bg-blue-600' type="submit">Update Event</Button>
-            <Button className='w-full py-2 text-base mt-2'>Cancel</Button>
+            <Button className='w-full py-2 text-base mt-2' type='button' onClick={()=>router.push('/event/manage')}>Cancel</Button>
           </div>
 
         </form>

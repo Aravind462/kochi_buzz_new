@@ -8,6 +8,8 @@ import Link from 'next/link';
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from '@repo/frontend/components/ui/select';
 import { authService } from '../../../services/authServices';
 import { useRouter } from 'next/navigation';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { RegisterSchema } from '@repo/shared/src/validationSchemas/user';
 
 interface RegisterForm {
   username: string;
@@ -19,20 +21,21 @@ interface RegisterForm {
 
 const SignupPage = () => {
   const router = useRouter();
-  const { register, handleSubmit, formState: { errors }, control, watch } = useForm({
+  const { register, handleSubmit, formState: { errors, isSubmitting }, control, watch } = useForm({
     defaultValues: {
       username: '',
       email: '',
       password: '',
       confirmPassword: '',
       role: ''
-    }
+    },
+    resolver: zodResolver(RegisterSchema)
   });
 
   const onSubmit = async (data: RegisterForm) => {
-    const { confirmPassword, ...userData  } = data;
+    // const { confirmPassword, ...userData  } = data;
     try {
-      const response = await authService.register(userData);
+      const response = await authService.register(data);
 
       console.log(response);
       
@@ -56,37 +59,37 @@ const SignupPage = () => {
           <div className='my-3'>
             <div className='flex justify-between mb-2'>
               <label htmlFor="username">Username</label>
-              <p className='text-red-600'>{errors.username?.message}</p>
+              <p className='text-red-600 text-xs'>{errors.username?.message}</p>
             </div>
-            <Input {...register("username", { required: "Required" })} type="text" id="username" className='font-normal' />
+            <Input {...register("username")} type="text" id="username" className='font-normal' />
           </div>
           <div className='my-3'>
             <div className='flex justify-between mb-2'>
               <label htmlFor="email">Email</label>
-              <p className='text-red-600'>{errors.email?.message}</p>
+              <p className='text-red-600 text-xs'>{errors.email?.message}</p>
             </div>
-            <Input {...register("email", { required: "Required" })} type="email" id="email" className='font-normal' />
+            <Input {...register("email")} type="email" id="email" className='font-normal' />
           </div>
           <div className='my-3'>
             <div className='flex justify-between mb-2'>
               <label htmlFor="password">Password</label>
-              <p className='text-red-600'>{errors.password?.message}</p>
+              <p className='text-red-600 text-xs'>{errors.password?.message}</p>
             </div>
-            <Input {...register("password", { required: "Required" })} type="password" id="password" className='font-normal' />
+            <Input {...register("password")} type="password" id="password" className='font-normal' />
           </div>
           <div className='my-3'>
             <div className='flex justify-between mb-2'>
               <label htmlFor="confirmPassword">Confirm Password</label>
-              <p className='text-red-600'>{errors.confirmPassword?.message}</p>
+              <p className='text-red-600 text-xs'>{errors.confirmPassword?.message}</p>
             </div>
-            <Input {...register("confirmPassword", { required: "Required", validate: (value) => value === watch("password") || "Password do not match" })} type="password" id="confirmPassword" className='font-normal' />
+            <Input {...register("confirmPassword")} type="password" id="confirmPassword" className='font-normal' />
           </div>
           <div className='my-3'>
             <div className='flex justify-between mb-2'>
               <label htmlFor="role">Role</label>
-              <p className='text-red-600'>{errors.role?.message}</p>
+              <p className='text-red-600 text-xs'>{errors.role?.message}</p>
             </div>
-            <Controller name="role" control={control} rules={{ required: "Required" }} render={({field})=>(
+            <Controller name="role" control={control} render={({field})=>(
                 <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger id="role" className='font-normal'>
                     <SelectValue placeholder="Select your role" />
@@ -100,7 +103,7 @@ const SignupPage = () => {
               )} />
           </div>
           <div className='my-3'>
-            <Button className='w-full' type="submit">Sign Up</Button>
+            <Button className='w-full' type="submit" disabled={isSubmitting}>{ isSubmitting? "Loading..." : "Sign Up" }</Button>
           </div>
         </form>
         <hr className='my-2' />

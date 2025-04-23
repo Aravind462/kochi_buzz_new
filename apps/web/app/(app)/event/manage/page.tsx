@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { IEvent } from "@repo/types/lib/schema/event";
 import { eventServices } from "../../../../services/eventServices";
 import { useUser } from "../../../../providers/UserContext";
+import Link from "next/link";
 
 const Page = () => {
   const [activeTab, setActiveTab] = useState<"Accepted" | "Pending" | "Rejected">("Accepted");
@@ -41,7 +42,7 @@ const Page = () => {
 
       {/* Tabs */}
       <div className="flex space-x-4 mb-5">
-        {["Approved", "Pending", "Rejected"].map((status) => (
+        {["Accepted", "Pending", "Rejected"].map((status) => (
           <Button
             key={status}
             variant={activeTab === status ? "default" : "outline"}
@@ -77,6 +78,7 @@ const Page = () => {
           <p className="text-gray-500 text-center py-5">No {activeTab} events found.</p>
         )}
       </div>
+      <Link href="/event/add"><Button className="mt-5 bg-green-600">Add New Event</Button></Link>
     </div>
   );
 };

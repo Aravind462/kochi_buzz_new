@@ -10,15 +10,18 @@ import { authService } from '../../../services/authServices';
 import { useRouter } from 'next/navigation';
 import { IUser } from '@repo/types/lib/schema/user';
 import { useUser } from '../../../providers/UserContext';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { LoginSchema } from '@repo/shared/src/validationSchemas/user';
 
 
 const LoginPage: React.FC = () => {
   const { setUser } = useUser();
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm({
     defaultValues: {
       email: '',
       password: ''
-    }
+    },
+    resolver: zodResolver(LoginSchema)
   });
 
   const router = useRouter();
@@ -42,21 +45,21 @@ const LoginPage: React.FC = () => {
         <h1 className='text-center font-bold text-3xl mb-3'>Login</h1>
         <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col text-sm font-semibold'>
           <div className='my-3'>
-            <div className='flex justify-between mb-2'>
+            <div className='flex justify-between items-center mb-2'>
               <label htmlFor="email">Email</label>
-              <p className='text-red-600'>{errors.email?.message}</p>
+              <p className='text-red-600 text-xs'>{errors.email?.message}</p>
             </div>
-            <Input {...register("email", { required: "Required" })} type="email" id="email" />
+            <Input {...register("email")} type="email" id="email" />
           </div>
           <div className='my-3'>
-            <div className='flex justify-between mb-2'>
+            <div className='flex justify-between items-center mb-2'>
               <label htmlFor="password">Password</label>
-              <p className='text-red-600'>{errors.password?.message}</p>
+              <p className='text-red-600 text-xs'>{errors.password?.message}</p>
             </div>
-            <Input {...register("password", { required: "Required" })} type="password" id="password" />
+            <Input {...register("password")} type="password" id="password" />
           </div>
           <div className='my-3'>
-            <Button className='w-full' type="submit">Login</Button>
+            <Button className='w-full' type="submit" disabled={isSubmitting}>{ isSubmitting? "Loading..." : "Login" }</Button>
           </div>
         </form>
         <hr className='my-2' />

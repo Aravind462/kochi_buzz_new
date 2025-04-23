@@ -11,6 +11,8 @@ import { useUser } from '../../../../providers/UserContext';
 import { useRouter } from 'next/navigation';
 import Map from '@repo/frontend/components/Map'
 import { Textarea } from '@repo/frontend/components/ui/textarea';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { eventSchema } from '@repo/shared/src/validationSchemas/event';
 
 const AddEventPage = () => {
   const router = useRouter();
@@ -31,11 +33,13 @@ const AddEventPage = () => {
       longitude: null,
       category: '',
       price: null,
-    }
+      organizer_id: user?.id,
+    },
+    resolver: zodResolver(eventSchema),
   });
 
   const onSubmit = async (data: IEvent) => {
-    data.organizer_id = user?.id;
+    // data.organizer_id = user?.id;
     console.log('Form Data:', data);
     try {
       const response = await eventServices.create(data);
@@ -101,14 +105,14 @@ const AddEventPage = () => {
           {/* Title */}
           <div className='mb-4'>
             <label className='block mb-1'>Title</label>
-            <Input {...register("title", { required: "Required" })} type="text" className='w-full px-3 py-2 border rounded-md' />
+            <Input {...register("title")} type="text" className='w-full px-3 py-2 border rounded-md' />
             {errors.title && <p className='text-red-600 text-xs mt-2'>{errors.title.message}</p>}
           </div>
 
           {/* Description */}
           <div className='mb-4'>
             <label className='block mb-1'>Description</label>
-              <Textarea {...register("description", { required: "Required" })} rows={3} className='w-full px-3 py-2 border rounded-md'></Textarea>
+              <Textarea {...register("description")} rows={3} className='w-full px-3 py-2 border rounded-md'></Textarea>
             {errors.description && <p className='text-red-600 text-xs'>{errors.description.message}</p>}
           </div>
 
@@ -116,26 +120,34 @@ const AddEventPage = () => {
           <div className='mb-4'>
             <label className='block mb-1'>From Date & Time</label>
             <div className='flex space-x-3'>
-              <Input {...register("from_date", { required: "Required" })} type="date" className='w-1/2 px-3 py-2 border rounded-md' />
-              <Input {...register("from_time", { required: "Required" })} type="time" className='w-1/2 px-3 py-2 border rounded-md' />
+              <Input {...register("from_date")} type="date" className='w-1/2 px-3 py-2 border rounded-md' />
+              <Input {...register("from_time")} type="time" className='w-1/2 px-3 py-2 border rounded-md' />
             </div>
-            {(errors.from_date || errors.from_time) && <p className='text-red-600 text-xs mt-2'>Both date and time are required.</p>}
+            <div className='flex space-x-1'>
+              {errors.from_date && <p className='text-red-600 text-xs mt-2'>{ errors.from_date.message }</p>}
+              {(errors.from_date && errors.from_time) && <p className='text-red-600 text-xs mt-2'>&</p>}
+              {errors.from_time && <p className='text-red-600 text-xs mt-2'>{ errors.from_time.message }</p>}
+            </div>
           </div>
 
           {/* To Date & Time */}
           <div className='mb-4'>
             <label className='block mb-1'>To Date & Time</label>
             <div className='flex space-x-3'>
-              <Input {...register("to_date", { required: "Required" })} type="date" className='w-1/2 px-3 py-2 border rounded-md' />
-              <Input {...register("to_time", { required: "Required" })} type="time" className='w-1/2 px-3 py-2 border rounded-md' />
+              <Input {...register("to_date")} type="date" className='w-1/2 px-3 py-2 border rounded-md' />
+              <Input {...register("to_time")} type="time" className='w-1/2 px-3 py-2 border rounded-md' />
             </div>
-            {(errors.to_date || errors.to_time) && <p className='text-red-600 text-xs mt-2'>Both date and time are required.</p>}
+            <div className='flex space-x-1'>
+              {errors.to_date && <p className='text-red-600 text-xs mt-2'>{ errors.to_date.message }</p>}
+              {(errors.to_date && errors.to_time) && <p className='text-red-600 text-xs mt-2'>&</p>}
+              {errors.to_time && <p className='text-red-600 text-xs mt-2'>{ errors.to_time.message }</p>}
+            </div>
           </div>
 
           {/* Venue */}
           <div className=''>
             <label className='block mb-1'>Venue</label>
-              <Input {...register("venue", { required: "Required" })} onFocus={handleFocus} onBlur={handleBlur} onChange={handleInputChange} type="text" className='w-full px-3 py-2 border rounded-md' />
+              <Input {...register("venue")} onFocus={handleFocus} onBlur={handleBlur} onChange={handleInputChange} type="text" className='w-full px-3 py-2 border rounded-md' />
             {errors.venue && <p className='text-red-600 text-xs mt-2'>{errors.venue.message}</p>}
           </div>
 
@@ -159,7 +171,7 @@ const AddEventPage = () => {
           {/* Location */}
           {/* <div className='mb-4'>
             <label className='block mb-1'>Location</label>
-              <Input {...register("location", { required: "Required" })} type="text" className='w-full px-3 py-2 border rounded-md' />
+              <Input {...register("location")} type="text" className='w-full px-3 py-2 border rounded-md' />
             {errors.location && <p className='text-red-600 text-xs mt-2'>{errors.location.message}</p>}
           </div> */}
 
@@ -167,10 +179,11 @@ const AddEventPage = () => {
           <div className='my-4'>
             <label className='block mb-1'>Location</label>
             <Map eLoc={eLoc}  setLatLng={({ latitude, longitude }: any) => {
-                setValue("latitude", latitude);
-                setValue("longitude", longitude);
+                setValue("latitude", latitude, { shouldValidate: true });
+                setValue("longitude", longitude, { shouldValidate: true });
               }}
             />
+            {(errors.latitude || errors.longitude) && <p className='text-red-600 text-xs mt-2'>Location required</p>}
           </div>
 
           {/* Category */}
@@ -179,7 +192,6 @@ const AddEventPage = () => {
             <Controller 
               name="category"
               control={control}
-              rules={{ required: "Required" }}
               render={({ field }) => (
                 <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger className='w-full px-3 py-2 border rounded-md'>
@@ -207,7 +219,7 @@ const AddEventPage = () => {
           <div className='mb-4'>
             <label className='block mb-1'>Price (₹)</label>
               <Input 
-                {...register("price", { required: "Required", valueAsNumber: true, min: { value: 0, message: "Price must be positive" } })} 
+                {...register("price")} 
                 type="number" 
                 className='w-full px-3 py-2 border rounded-md' 
               />

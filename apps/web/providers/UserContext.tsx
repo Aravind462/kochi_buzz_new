@@ -22,7 +22,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         const data = await userServices.getCurrentUser();
         setUser(data);
       } catch (error) {
-        console.error("Error while fetching current user data", error);
+        console.log("Error while fetching current user data", error);
       } finally {
         setLoading(false);
       }
