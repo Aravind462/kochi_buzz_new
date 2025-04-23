@@ -21,7 +21,7 @@ class AuthService extends AbstractServices<IUser> {
   public login = async (data: ILoginRequest): Promise<IUser> => {
     const response = await this.http.post<IAPIV1Response<ILoginResponse>>("/login", data);
 
-    if (response.data.data) {
+    if (response.data.data.accessToken) {
       setAccessToken(response.data.data.accessToken);
       return userServices.getCurrentUser();
     } else {

@@ -41,7 +41,7 @@ const Page = () => {
 
       {/* Tabs */}
       <div className="flex space-x-4 mb-5">
-        {["Accepted", "Pending", "Rejected"].map((status) => (
+        {["Approved", "Pending", "Rejected"].map((status) => (
           <Button
             key={status}
             variant={activeTab === status ? "default" : "outline"}

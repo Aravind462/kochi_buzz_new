@@ -14,6 +14,18 @@ import { UserModel } from "../models/user.model";
 class UserRepository implements IBaseRepository<IUser, number> {
   protected model = UserModel;
 
+  async create<R = IUser>(data: IUser): Promise<R> {
+    const transaction: Transaction = await this.model.sequelize!.transaction();
+    try {
+      const response = await this.model.create(data, { transaction });
+      await transaction.commit();
+      return getData(response);
+    } catch (error) {
+      await transaction.rollback();
+      throw error;
+    }
+  }
+
   async getAll<R = IUser>(
     queryParams: Omit<IQueryStringParams, "cursor">
   ): Promise<R[]> {
@@ -27,6 +39,14 @@ class UserRepository implements IBaseRepository<IUser, number> {
 
   async getById<R = IUser>(id: number): Promise<R | null> {
     const response = await this.model.findByPk(id);
+    if (!response) return null;
+    return getData(response);
+  }
+
+  async getByEmail<R = IUser>(email: string): Promise<R | null> {
+    const response = await this.model.findOne({
+      where: { email },
+    });
     if (!response) return null;
     return getData(response);
   }

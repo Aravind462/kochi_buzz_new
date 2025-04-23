@@ -34,8 +34,10 @@ const SignupPage = () => {
     try {
       const response = await authService.register(userData);
 
-      if(response.data.message === "Account already exists"){
-        return alert("Account already in use.")
+      console.log(response);
+      
+      if(response.data.message === "User already exists"){
+        return alert("Account already in use.");
       }
 
       alert("Registration successfull");

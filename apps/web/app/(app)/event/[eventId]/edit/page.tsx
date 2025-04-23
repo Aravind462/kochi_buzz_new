@@ -14,7 +14,9 @@ const Page = () => {
   const router = useRouter();
   const { eventId } = useParams(); // Get event ID from URL
   const [loading, setLoading] = useState(true);
-
+  const [suggestions, setSuggestions] = useState<any[]>([]);
+  const [isFocused, setIsFocused] = useState(false);
+  const [eLoc, setELoc] = useState();
   const { register, handleSubmit, formState: { errors }, control, setValue, watch } = useForm<IEvent>();
 
   useEffect(() => {
@@ -38,6 +40,49 @@ const Page = () => {
 
     fetchEvent();
   }, [eventId, setValue]);
+
+  const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value.length > 2) { // Trigger API call when input length is greater than 2
+      try {
+        // Use the full URL for the backend server running on localhost:3100
+        const response = await fetch(`http://localhost:3100/api/v1/map/geocode?address=${encodeURIComponent(value)}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_MMI_API_KEY}`, // Pass the API key in the Authorization header
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Error fetching geocode data');
+        }
+        const data = await response.json();
+        console.log(data);
+        setSuggestions(data.copResults || []); // Assuming copResults contains the results
+
+      } catch (error) {
+        console.error('Error fetching geocode data:', error);
+        setSuggestions([]); // Clear suggestions on error
+      }
+    } else {
+      setSuggestions([]); // Clear suggestions if input length is less than 3
+    }
+  };
+
+  // Handle suggestion click
+  const handleSuggestionClick = (suggestion: any) => {
+    setValue("venue", suggestion.formattedAddress, { shouldValidate: true });
+    setELoc(suggestion.eLoc);
+    setSuggestions([]); // Clear suggestions after selection
+  };
+
+  const handleFocus = () => setIsFocused(true);
+
+  const handleBlur = () =>{
+    setTimeout(()=>{
+      setIsFocused(false);
+    }, 1000);
+  }
 
   const onSubmit = async (data: IEvent) => {
     try {
@@ -99,8 +144,25 @@ const Page = () => {
           {/* Venue */}
           <div className='mb-4'>
             <label className='block mb-1'>Venue</label>
-            <Input {...register("venue", { required: "Required" })} type="text" className='w-full px-3 py-2 border rounded-md' />
+              <Input {...register("venue", { required: "Required" })} onFocus={handleFocus} onBlur={handleBlur} onChange={handleInputChange} type="text" className='w-full px-3 py-2 border rounded-md' />
             {errors.venue && <p className='text-red-600 text-xs mt-2'>{errors.venue.message}</p>}
+          </div>
+
+          {/* Display Suggestions */}
+          <div className='z-10'>
+            {isFocused && suggestions.length > 0 && (
+              <ul className="bg-white border border-gray-300 w-full rounded-md shadow-lg max-h-60 overflow-y-auto">
+                {suggestions.map((suggestion, index) => (
+                  <li
+                    key={index}
+                    className="px-3 py-2 cursor-pointer hover:bg-gray-200"
+                    onClick={() => handleSuggestionClick(suggestion)}
+                  >
+                    {suggestion.formattedAddress}
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
 
           {/* Location */}
@@ -113,7 +175,7 @@ const Page = () => {
           {/* Map */}
           <div className='my-4'>
             <label className='block mb-1'>Location</label>
-            <Map setLatLng={({ latitude, longitude }: any) => {
+            <Map eLoc={eLoc} setLatLng={({ latitude, longitude }: any) => {
                 setValue("latitude", latitude);
                 setValue("longitude", longitude);
               }} lat={latitude} lng={longitude} />

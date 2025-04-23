@@ -75,13 +75,11 @@ const HomePage: React.FC = () => {
 
         if (primaryEvents.length < 4 && subArray.length != 0) {
           const additionalEvents = await eventServices.getAllEvents({
-            query: {
-              filter: {
-                status: { eq: "Accepted" },
-                id: { nin: subArray }, // avoid duplicates
-              },
-              limit: 4 - primaryEvents.length, // get only the number you need
+            filter: {
+              status: { eq: "Accepted" },
+              id: { nin: subArray }, // avoid duplicates
             },
+            limit: 4 - primaryEvents.length, // get only the number you need
           });
 
           console.log(additionalEvents);
@@ -127,8 +125,6 @@ const HomePage: React.FC = () => {
             latitude: latLng?.latitude,
             longitude: latLng?.longitude
         });
-        console.log(response);
-        
         setNearbyEvents(response);
       } catch(error) {
         console.error("Error while fetching nearby events", error)

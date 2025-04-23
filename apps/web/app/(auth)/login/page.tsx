@@ -26,6 +26,7 @@ const LoginPage: React.FC = () => {
   const onSubmit = async (data: IUser) => {
     try {
       const response = await authService.login(data);
+      
       if(!response) {
         return alert("Incorrect email or password");
       }

@@ -13,7 +13,7 @@ interface UserContextType {
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<IUser | null>();
+  const [user, setUser] = useState<IUser | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -21,13 +21,13 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       try {
         const data = await userServices.getCurrentUser();
         setUser(data);
-      } catch(error) {
+      } catch (error) {
         console.error("Error while fetching current user data", error);
       } finally {
         setLoading(false);
       }
-    }
-    
+    };
+
     getCurrentUser();
   }, []);
 

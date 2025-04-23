@@ -23,11 +23,10 @@ const Header: React.FC = () => {
   const router = useRouter();
   const role = user?.role;
   const [popoverOpen, setPopoverOpen] = useState(false);
-
+  
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        console.log(user?.id)
         const response = await notificationServices.getAll({
           filter: {
             user_id: { eq : user?.id },
