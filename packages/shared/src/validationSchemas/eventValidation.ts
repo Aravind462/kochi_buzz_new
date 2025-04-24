@@ -26,9 +26,7 @@ export const eventSchema = z.object({
   }).min(0, { message: 'Price must be a positive number' })),
 
   organizer_id: z.number(),
-//   status: z.enum(['Accepted', 'Pending', 'Rejected'], {
-//     required_error: 'Status is required',
-//   }),
+  status: z.enum(['Accepted', 'Pending', 'Rejected']).optional(),
 }).superRefine((data, ctx) => {
   // To date must be after from date
   if (data.to_date < data.from_date) {

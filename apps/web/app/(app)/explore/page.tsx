@@ -48,7 +48,7 @@ const page: React.FC = () => {
   };
 
   return (
-    <div className='flex pt-10 m-10 min-h-screen bg-white rounded-lg shadow-md'>
+    <div className='flex mt-10 min-h-screen'>
       <div className='w-1/4 mx-5 p-5'>
         <Sidebar setFilter={setFilter} />
       </div>

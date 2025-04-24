@@ -8,7 +8,6 @@ import { FaCheck, FaTimes, FaTrash } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 import { notificationServices } from '../../../services/notificationServices';
 import { userServices } from '../../../services/userServices';
-import { INotification } from '@repo/types/lib/schema/notification';
 import { reportServices } from '../../../services/reportServices';
 import { IReport } from '@repo/types/lib/schema/report';
 
@@ -103,11 +102,11 @@ const AdminPanel: React.FC = () => {
   if (loading) return <p className="text-center min-h-screen text-xl">Loading admin data...</p>;
 
   return (
-    <div className="p-6 min-h-screen ">
-      <h1 className="text-2xl font-bold mb-6">Admin Panel</h1>
+    <div className="p-6 min-h-screen">
+      <h1 className="text-2xl font-bold mb-10">Admin Panel</h1>
 
       {/* Pending Events Section */}
-      <section className="mb-10 bg-white p-5 rounded-lg shadow-md">
+      <section className="mb-10 bg-white">
         <h2 className="text-xl font-semibold mb-3">Pending Events</h2>
         {pendingEvents.length === 0 ? (
           <p className="text-gray-500">No pending events</p>
@@ -140,7 +139,7 @@ const AdminPanel: React.FC = () => {
       </section>
 
       {/* Reported Events Section */}
-      <section className='bg-white p-5 rounded-lg shadow-md'>
+      <section className='bg-white'>
         <h2 className="text-xl font-semibold mb-3">Reported Events</h2>
         {reportedEvents.length === 0 ? (
           <p className="text-gray-500">No reported events</p>

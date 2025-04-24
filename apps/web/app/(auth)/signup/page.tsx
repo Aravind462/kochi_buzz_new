@@ -9,7 +9,7 @@ import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from '@
 import { authService } from '../../../services/authServices';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { RegisterSchema } from '@repo/shared/src/validationSchemas/user';
+import { RegisterSchema } from '@repo/shared/lib/validationSchemas/userValidation';
 
 interface RegisterForm {
   username: string;

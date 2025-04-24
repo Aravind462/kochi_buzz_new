@@ -12,7 +12,7 @@ import { useRouter } from 'next/navigation';
 import Map from '@repo/frontend/components/Map'
 import { Textarea } from '@repo/frontend/components/ui/textarea';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { eventSchema } from '@repo/shared/src/validationSchemas/event';
+import { eventSchema } from '@repo/shared/lib/validationSchemas/eventValidation';
 
 const AddEventPage = () => {
   const router = useRouter();

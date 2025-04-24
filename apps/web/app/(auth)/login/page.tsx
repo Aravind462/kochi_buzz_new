@@ -11,7 +11,7 @@ import { useRouter } from 'next/navigation';
 import { IUser } from '@repo/types/lib/schema/user';
 import { useUser } from '../../../providers/UserContext';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { LoginSchema } from '@repo/shared/src/validationSchemas/user';
+import { LoginSchema } from '@repo/shared/lib/validationSchemas/userValidation';
 
 
 const LoginPage: React.FC = () => {

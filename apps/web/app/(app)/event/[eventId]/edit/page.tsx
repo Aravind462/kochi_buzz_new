@@ -10,7 +10,7 @@ import { IEvent } from '@repo/types/lib/schema/event';
 import { useRouter, useParams } from 'next/navigation';
 import Map from '@repo/frontend/components/Map';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { eventSchema } from '@repo/shared/src/validationSchemas/event';
+import { eventSchema } from '@repo/shared/lib/validationSchemas/eventValidation';
 
 const Page = () => {
   const router = useRouter();
