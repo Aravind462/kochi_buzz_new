@@ -4,3 +4,9 @@
     height: 800px;
     max-height: 90vh;
 }
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}

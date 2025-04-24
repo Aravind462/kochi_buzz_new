@@ -49,7 +49,7 @@ const Sidebar: React.FC<SidebarProps> = ({ setFilter }) => {
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col w-full mt-5 px-10'>
+        <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col'>
             {/* Category */}
             <div>
                 <h1 className='font-semibold text-xl'>Category</h1>
@@ -62,6 +62,7 @@ const Sidebar: React.FC<SidebarProps> = ({ setFilter }) => {
                             render={({ field }) => (
                                 <div className='flex items-center'>
                                     <Checkbox
+                                        className='bg-white'
                                         checked={field.value?.includes(item)}
                                         onCheckedChange={(checked) => {
                                             const updatedCategories = checked
@@ -95,7 +96,7 @@ const Sidebar: React.FC<SidebarProps> = ({ setFilter }) => {
                         control={control} 
                         render={({ field }) => (
                             <Select value={field.value} onValueChange={field.onChange}>
-                                <SelectTrigger id="location" className='font-normal'>
+                                <SelectTrigger id="location" className='font-normal bg-white'>
                                     <SelectValue placeholder="Select location" />
                                 </SelectTrigger>
                                 <SelectContent>

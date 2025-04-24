@@ -48,14 +48,14 @@ const page: React.FC = () => {
   };
 
   return (
-    <div className='flex my-10 min-h-screen'>
-      <div className='w-1/4'>
+    <div className='flex pt-10 m-10 min-h-screen bg-white rounded-lg shadow-md'>
+      <div className='w-1/4 mx-5 p-5'>
         <Sidebar setFilter={setFilter} />
       </div>
       <div className='w-3/4 flex-grow me-10'>
-        <div className='flex mx-10'>
-          <Input value={search} onChange={(e)=>setSearch(e.target.value)} type='text' placeholder='Search events' className='me-1 bg-white' />
-          <Button onClick={fetchEvents} className='ms-1'><FaSearch /></Button>
+        <div className='flex items-center mx-10'>
+          <Input value={search} onChange={(e)=>setSearch(e.target.value)} type='text' placeholder='Search events' className='me-1 p-6 bg-white' />
+          <Button onClick={fetchEvents} className='ms-1 p-6'><FaSearch /></Button>
         </div>
         <div className='grid grid-cols-4 gap-3 mt-10'>
           {

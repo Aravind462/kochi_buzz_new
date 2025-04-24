@@ -105,7 +105,7 @@ const App = ({ eLoc, setLatLng, lat, lng, isUser }: any) => {
     }, []);
     
     return (
-        <div id="map" style={{ width: "100%", height: "500px", position: "relative" }} className="rounded">
+        <div id="map" style={{ width: "100%", height: "500px", position: "relative" }} className="rounded z-0">
             {isMapLoaded && <MarkerPlugin map={mapRef.current} setLatLng={setLatLng} eLoc={eLoc} markerRef={markerRef} />}
         </div>
     );

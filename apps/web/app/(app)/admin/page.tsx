@@ -103,18 +103,18 @@ const AdminPanel: React.FC = () => {
   if (loading) return <p className="text-center min-h-screen text-xl">Loading admin data...</p>;
 
   return (
-    <div className="p-6 min-h-screen">
+    <div className="p-6 min-h-screen ">
       <h1 className="text-2xl font-bold mb-6">Admin Panel</h1>
 
       {/* Pending Events Section */}
-      <section className="mb-10">
+      <section className="mb-10 bg-white p-5 rounded-lg shadow-md">
         <h2 className="text-xl font-semibold mb-3">Pending Events</h2>
         {pendingEvents.length === 0 ? (
           <p className="text-gray-500">No pending events</p>
         ) : (
           <div className="space-y-4">
             {pendingEvents?.map((event) => (
-              <div key={event.id} className="p-4 border rounded-lg flex justify-between items-center hover:bg-gray-100" onClick={()=>router.push(`/event/${event.id}`)}>
+              <div key={event.id} className="p-4 border border-gray-300 rounded-lg flex justify-between items-center hover:bg-gray-100 hover:cursor-pointer" onClick={()=>router.push(`/event/${event.id}`)}>
                 <div>
                   <h3 className="font-semibold">{event.title}</h3>
                   <p className="text-sm text-gray-600">{event.venue} | {event.from_date.toString()}</p>
@@ -140,14 +140,14 @@ const AdminPanel: React.FC = () => {
       </section>
 
       {/* Reported Events Section */}
-      <section>
+      <section className='bg-white p-5 rounded-lg shadow-md'>
         <h2 className="text-xl font-semibold mb-3">Reported Events</h2>
         {reportedEvents.length === 0 ? (
           <p className="text-gray-500">No reported events</p>
         ) : (
           <div className="space-y-4">
             {reportedEvents?.map((event) => (
-              <div key={event.id} className="p-4 border rounded-lg flex justify-between items-center hover:bg-gray-100" onClick={()=>router.push(`/event/${event.id}`)}>
+              <div key={event.id} className="p-4 border border-gray-300 rounded-lg flex justify-between items-center hover:bg-gray-200 hover:cursor-pointer" onClick={()=>router.push(`/event/${event.id}`)}>
                 <div>
                   <h3 className="font-semibold">{event.title}</h3>
                   <p className="text-sm text-gray-600">{event.venue} | {event.from_date.toString()}</p>

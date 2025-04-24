@@ -235,9 +235,9 @@ const Page = () => {
           </div>
 
           {/* Submit Button */}
-          <div className='mt-5'>
-            <Button className='w-full py-2 text-base bg-blue-600' type="submit">Update Event</Button>
-            <Button className='w-full py-2 text-base mt-2' type='button' onClick={()=>router.push('/event/manage')}>Cancel</Button>
+          <div className='mt-5 flex '>
+            <Button className='w-full py-2 text-base mx-2 bg-green-600' type="submit">Update Event</Button>
+            <Button className='w-full py-2 text-base mx-2 bg-red-600' type='button' onClick={()=>router.push('/event/manage')}>Cancel</Button>
           </div>
 
         </form>

@@ -100,13 +100,13 @@ const Header: React.FC = () => {
   }
 
   return (
-    <nav className='flex justify-between px-8 py-6 items-center shadow-lg bg-white h-min'>
+    <nav className='flex justify-between px-8 py-6 items-center shadow-lg bg-white h-min sticky top-0 w-full z-50'>
       <div>
         <img src="https://cdn-icons-png.flaticon.com/128/16462/16462118.png" className='w-14 ms-5' alt="" />
       </div>
       <div className='flex justify-center text-xl font-medium items-center mt-1'>
-        <Link href="/" className="px-2 text-gray-700 hover:text-black">Home</Link>
-        <Link href="/explore" className="px-2 text-gray-700 hover:text-black">Explore</Link>
+        <Link href="/" className="px-2 hover:text-gray-700 text-black">Home</Link>
+        <Link href="/explore" className="px-2 hover:text-gray-700 text-black">Explore</Link>
 
         {/* Only organizers and admins can see 'Add Event' */}
         {/* {(role === "organizer" || role === "admin") && (
@@ -114,11 +114,11 @@ const Header: React.FC = () => {
         )} */}
         {/* Only organizers and admins can see 'Manage Events' */}
         {(role === "organizer" || role === "admin") && (
-          <Link href="/event/manage" className="px-2 text-gray-700 hover:text-black">Manage Events</Link>
+          <Link href="/event/manage" className="px-2 hover:text-gray-700 text-black">Manage Events</Link>
         )}
         {/* Only admins can see 'Admin Panel' */}
         {role === "admin" && (
-          <Link href="/admin" className="px-2 text-gray-700 hover:text-black">Admin Panel</Link>
+          <Link href="/admin" className="px-2 hover:text-gray-700 text-black">Admin Panel</Link>
         )}
       </div>
 

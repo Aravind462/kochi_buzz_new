@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="bg-gray-50">
+        <div className="bg-gray-200">
           <AppLayout>
             <UserProvider>
               {children}

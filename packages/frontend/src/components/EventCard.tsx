@@ -11,20 +11,20 @@ const EventCard: React.FC<{ data: IEvent }> = ({ data }) => {
         <CardHeader className="min-h-[100px]">
             <CardTitle className="flex justify-between items-center">
                 <p className="text-2xl">{data?.title}</p>
-                <Badge variant="secondary" className="w-min line-clamp-2 break-words">{data?.category}</Badge>
+                <Badge variant="secondary" className="w-1/3 line-clamp-2 break-words">{data?.category}</Badge>
             </CardTitle>
         </CardHeader>
         <CardContent className="flex-grow">
             <p>Date: {data?.from_date ? new Date(data.from_date).toLocaleDateString("en-GB") : "N/A"}</p>
-            <p>Venue: {data?.venue}</p>
-            <p>Price: {data?.price}</p>
+            <p className='line-clamp-2 break-words'>Venue: {data?.venue}</p>
+            <p>Price: {data?.price === 0? "Free" : "₹"+data.price}</p>
         </CardContent>
         <CardFooter>
             <Link href={`/event/${data.id}`}>
                 <Button>View Details</Button>
             </Link>
         </CardFooter>
-      </Card>
+    </Card>
   )
 }
 

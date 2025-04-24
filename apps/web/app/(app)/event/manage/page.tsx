@@ -66,7 +66,7 @@ const Page = () => {
             </thead>
             <tbody>
               {eventData?.map((event) => (
-                <tr key={event.id} className="border-b hover:bg-gray-100" onClick={()=>router.push(`/event/${event.id}`)}>
+                <tr key={event.id} className="border-b hover:bg-gray-100 hover:cursor-pointer" onClick={()=>router.push(`/event/${event.id}`)}>
                   <td className="p-3">{event.title}</td>
                   <td className="p-3">{event.from_date.toString()}</td>
                   <td className="p-3">{event.venue}</td>
