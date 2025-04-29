@@ -13,6 +13,8 @@ import Map from '@repo/frontend/components/Map'
 import { Textarea } from '@repo/frontend/components/ui/textarea';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { eventSchema } from '@repo/shared/lib/validationSchemas/eventValidation';
+import { toast } from 'sonner';
+import ButtonSpinner from '@repo/frontend/components/ButtonSpinner';
 
 const AddEventPage = () => {
   const router = useRouter();
@@ -20,7 +22,7 @@ const AddEventPage = () => {
   const [eLoc, setELoc] = useState();
   const [suggestions, setSuggestions] = useState<any[]>([]);
   const [isFocused, setIsFocused] = useState(false);
-  const { register, handleSubmit, formState: { errors }, control, setValue } = useForm<IEvent>({
+  const { register, handleSubmit, formState: { errors, isSubmitting }, control, setValue } = useForm<IEvent>({
     defaultValues: {
       title: '',
       description: '',
@@ -44,10 +46,11 @@ const AddEventPage = () => {
     try {
       const response = await eventServices.create(data);
       if(response.id) {
-        alert('Event created successfully');
+        toast.success('Event created successfully');
         router.push('/');
       }
     } catch (err) {
+      toast.error('Error creating event');
       console.log(err);
     }
   };
@@ -57,7 +60,7 @@ const AddEventPage = () => {
     if (value.length > 2) { // Trigger API call when input length is greater than 2
       try {
         // Use the full URL for the backend server running on localhost:3100
-        const response = await fetch(`http://localhost:3100/api/v1/map/geocode?address=${encodeURIComponent(value)}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER}/map/geocode?address=${encodeURIComponent(value)}`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${process.env.NEXT_PUBLIC_MMI_API_KEY}`, // Pass the API key in the Authorization header
@@ -228,7 +231,7 @@ const AddEventPage = () => {
 
           {/* Submit Button */}
           <div className='mt-5'>
-            <Button className='w-full py-2 text-base' type="submit">Create Event</Button>
+            <Button className='w-full py-2 text-base' type="submit" disabled={isSubmitting}>{ isSubmitting? <ButtonSpinner /> : "Create Event" }</Button>
           </div>
         </form>
       </div>

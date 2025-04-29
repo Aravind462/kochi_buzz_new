@@ -10,6 +10,8 @@ import { authService } from '../../../services/authServices';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RegisterSchema } from '@repo/shared/lib/validationSchemas/userValidation';
+import { toast } from 'sonner';
+import ButtonSpinner from '@repo/frontend/components/ButtonSpinner';
 
 interface RegisterForm {
   username: string;
@@ -40,10 +42,10 @@ const SignupPage = () => {
       console.log(response);
       
       if(response.data.message === "User already exists"){
-        return alert("Account already in use.");
+        return toast.error("Account already in use.");
       }
 
-      alert("Registration successfull");
+      toast.success("Registration successfull");
       router.push('/login');
     
     } catch (err) {
@@ -103,7 +105,7 @@ const SignupPage = () => {
               )} />
           </div>
           <div className='my-3'>
-            <Button className='w-full' type="submit" disabled={isSubmitting}>{ isSubmitting? "Loading..." : "Sign Up" }</Button>
+            <Button className='w-full' type="submit" disabled={isSubmitting}>{ isSubmitting? <ButtonSpinner /> : "Sign Up" }</Button>
           </div>
         </form>
         <hr className='my-2' />

@@ -72,12 +72,16 @@ const HomePage: React.FC = () => {
         });        
 
         let allEvents = [...primaryEvents];
+        console.log(subArray);
+        
 
         if (primaryEvents.length < 4 && subArray.length != 0) {
           const additionalEvents = await eventServices.getAllEvents({
-            filter: {
-              status: { eq: "Accepted" },
-              id: { nin: subArray }, // avoid duplicates
+            query: {
+              filter: {
+                status: { eq: "Accepted" },
+                id: { nin: subArray }, // avoid duplicates
+              }
             },
             limit: 4 - primaryEvents.length, // get only the number you need
           });

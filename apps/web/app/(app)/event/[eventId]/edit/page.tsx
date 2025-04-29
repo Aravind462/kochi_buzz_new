@@ -11,6 +11,8 @@ import { useRouter, useParams } from 'next/navigation';
 import Map from '@repo/frontend/components/Map';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { eventSchema } from '@repo/shared/lib/validationSchemas/eventValidation';
+import { toast } from 'sonner';
+import ButtonSpinner from '@repo/frontend/components/ButtonSpinner';
 
 const Page = () => {
   const router = useRouter();
@@ -19,7 +21,7 @@ const Page = () => {
   const [suggestions, setSuggestions] = useState<any[]>([]);
   const [isFocused, setIsFocused] = useState(false);
   const [eLoc, setELoc] = useState();
-  const { register, handleSubmit, formState: { errors }, control, setValue, watch } = useForm<IEvent>({
+  const { register, handleSubmit, formState: { errors, isSubmitting }, control, setValue, watch } = useForm<IEvent>({
     resolver: zodResolver(eventSchema)
   });
 
@@ -50,7 +52,7 @@ const Page = () => {
     if (value.length > 2) { // Trigger API call when input length is greater than 2
       try {
         // Use the full URL for the backend server running on localhost:3100
-        const response = await fetch(`http://localhost:3100/api/v1/map/geocode?address=${encodeURIComponent(value)}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER}/map/geocode?address=${encodeURIComponent(value)}`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${process.env.NEXT_PUBLIC_MMI_API_KEY}`, // Pass the API key in the Authorization header
@@ -92,10 +94,11 @@ const Page = () => {
     try {
       const response = await eventServices.update(eventId as string, data);
       if (response) {
-        alert('Event updated successfully');
+        toast.success('Event updated successfully');
         router.push(`/event/${eventId}`);
       }
     } catch (err) {
+      toast.error('Error updating event');
       console.log(err);
     }
   };
@@ -236,7 +239,7 @@ const Page = () => {
 
           {/* Submit Button */}
           <div className='mt-5 flex '>
-            <Button className='w-full py-2 text-base mx-2 bg-green-600' type="submit">Update Event</Button>
+            <Button className='w-full py-2 text-base mx-2 bg-green-600' type="submit" disabled={isSubmitting}>{ isSubmitting? <ButtonSpinner /> : "Update Event" }</Button>
             <Button className='w-full py-2 text-base mx-2 bg-red-600' type='button' onClick={()=>router.push('/event/manage')}>Cancel</Button>
           </div>
 

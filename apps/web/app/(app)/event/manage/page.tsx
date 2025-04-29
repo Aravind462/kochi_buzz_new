@@ -26,7 +26,6 @@ const Page = () => {
                 }
             });
             console.log(data);
-            
             setEventData(data);
         } catch (error) {
             console.error("Failed to fetch data", error);

@@ -17,6 +17,7 @@ import { useUser } from "../../../../providers/UserContext";
 import ReportModal from "./ReportModal";
 import Map from "@repo/frontend/components/Map"
 import { reportServices } from "../../../../services/reportServices";
+import { toast } from "sonner";
 
 const EventDetailsPage = () => {
   const router = useRouter();
@@ -76,9 +77,10 @@ const EventDetailsPage = () => {
   const handleDelete = async () => {
     try {
       await eventServices.delete(eventData.id.toString());
-      alert("Event deleted successfully");
+      toast.success("Event deleted successfully");
       router.push("/event/manage");
     } catch (error) {
+      toast.error("Error deleting event");
       console.error("Error deleting event", error);
     }
   };
@@ -91,8 +93,9 @@ const EventDetailsPage = () => {
         report: data
       };
       await reportServices.create(newReport);
-      alert("Report submitted successfully");
+      toast.success("Report submitted successfully");
     } catch (error) {
+      toast.error("Error submitting report");
       console.error("Error submitting report", error);
     }
   };
@@ -156,7 +159,7 @@ const EventDetailsPage = () => {
 
         <div className="flex justify-between border-b pb-2">
           <p className="font-medium text-gray-700">Price:</p>
-          <p className="text-gray-600">{eventData?.price === 0 ? "Free" : `₹${eventData?.price}`}</p>
+          <p className="text-gray-600">{eventData?.price === 0 ? "Free" : `₹ ${eventData?.price}`}</p>
         </div>
 
         <div className="flex justify-between pb-2">

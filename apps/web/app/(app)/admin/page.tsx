@@ -10,6 +10,19 @@ import { notificationServices } from '../../../services/notificationServices';
 import { userServices } from '../../../services/userServices';
 import { reportServices } from '../../../services/reportServices';
 import { IReport } from '@repo/types/lib/schema/report';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@repo/frontend/components/ui/alert-dialog"
+
 
 const AdminPanel: React.FC = () => {
   const router = useRouter();
@@ -113,7 +126,7 @@ const AdminPanel: React.FC = () => {
         ) : (
           <div className="space-y-4">
             {pendingEvents?.map((event) => (
-              <div key={event.id} className="p-4 border border-gray-300 rounded-lg flex justify-between items-center hover:bg-gray-100 hover:cursor-pointer" onClick={()=>router.push(`/event/${event.id}`)}>
+              <div key={event.id} className="p-4 border border-gray-300 rounded-lg flex justify-between items-center hover:bg-gray-200 hover:cursor-pointer" onClick={()=>router.push(`/event/${event.id}`)}>
                 <div>
                   <h3 className="font-semibold">{event.title}</h3>
                   <p className="text-sm text-gray-600">{event.venue} | {event.from_date.toString()}</p>
@@ -157,12 +170,31 @@ const AdminPanel: React.FC = () => {
                   }
                   
                 </div>
-                <Button className='bg-red-600' onClick={(e) =>{
-                  e.stopPropagation();
-                  handleDeleteReported(event.id.toString());
-                  }}>
-                  <FaTrash className="mr-2" /> Delete Event
-                </Button>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button className="bg-red-600" onClick={(e) => e.stopPropagation()}>
+                      <FaTrash className="mr-2" /> Delete Event
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogOverlay/>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently delete the event.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        className="bg-red-600 hover:bg-red-700"
+                        onClick={() => handleDeleteReported(event.id.toString())}
+                      >
+                        Yes, delete it
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </div>
             ))}
           </div>

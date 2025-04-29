@@ -9,13 +9,12 @@ import Link from 'next/link';
 import { authService } from '../../../services/authServices';
 import { useRouter } from 'next/navigation';
 import { IUser } from '@repo/types/lib/schema/user';
-import { useUser } from '../../../providers/UserContext';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { LoginSchema } from '@repo/shared/lib/validationSchemas/userValidation';
-
+import { toast } from 'sonner';
+import ButtonSpinner from '@repo/frontend/components/ButtonSpinner';
 
 const LoginPage: React.FC = () => {
-  const { setUser } = useUser();
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm({
     defaultValues: {
       email: '',
@@ -31,7 +30,7 @@ const LoginPage: React.FC = () => {
       const response = await authService.login(data);
       
       if(!response) {
-        return alert("Incorrect email or password");
+        return toast.error("Incorrect email or password");
       }
       router.push("/"); // Redirect to dashboard on success
     } catch (err: any) {
@@ -59,7 +58,7 @@ const LoginPage: React.FC = () => {
             <Input {...register("password")} type="password" id="password" />
           </div>
           <div className='my-3'>
-            <Button className='w-full' type="submit" disabled={isSubmitting}>{ isSubmitting? "Loading..." : "Login" }</Button>
+            <Button className='w-full' type="submit" disabled={isSubmitting}>{ isSubmitting? <ButtonSpinner /> : "Login" }</Button>
           </div>
         </form>
         <hr className='my-2' />

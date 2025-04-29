@@ -17,7 +17,7 @@ const EventCard: React.FC<{ data: IEvent }> = ({ data }) => {
         <CardContent className="flex-grow">
             <p>Date: {data?.from_date ? new Date(data.from_date).toLocaleDateString("en-GB") : "N/A"}</p>
             <p className='line-clamp-2 break-words'>Venue: {data?.venue}</p>
-            <p>Price: {data?.price === 0? "Free" : "₹"+data.price}</p>
+            <p>Price: {data?.price === 0? "Free" : "₹ "+data.price}</p>
         </CardContent>
         <CardFooter>
             <Link href={`/event/${data.id}`}>
