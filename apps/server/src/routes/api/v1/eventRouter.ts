@@ -18,7 +18,7 @@ eventRouter.get('/subscriptions', eventSubscriptionController.getAll);
 
 eventRouter.get('/:id', eventController.getById);
 
-eventRouter.put('/:id', zodValidateMiddleware(eventSchema), authenticateUser, authorizeRole(["organizer", "admin"]), eventController.update);
+eventRouter.put('/:id', authenticateUser, authorizeRole(["organizer", "admin"]), eventController.update);
 
 eventRouter.delete('/:id', authenticateUser, authorizeRole(["organizer", "admin"]), eventController.delete);
 
