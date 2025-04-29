@@ -10,7 +10,7 @@ import { literal, Sequelize, Transaction } from "sequelize";
 import { NotFoundError } from "@repo/backend/lib/errors/NotFoundError";
 import { IEvent } from "@repo/types/lib/schema/event";
 import { EventModel } from "../models/event.model";
-import { EventSubscriptionModel } from "../models/eventSubscription.model";
+import { Op } from "sequelize";
 
 class EventRepository implements IBaseRepository<IEvent> {
   protected model = EventModel;
@@ -63,12 +63,15 @@ class EventRepository implements IBaseRepository<IEvent> {
     const { latitude, longitude } = data;
 
     const events = await this.model.findAll({
-      where: literal(`
-        ST_Distance_Sphere(
-          point(longitude, latitude),
-          point(${longitude}, ${latitude})
-        ) <= ${radiusInKm * 1000}
-      `),
+      where: {
+        status: "Accepted",
+        [Op.and]: literal(`
+          ST_Distance_Sphere(
+            point(longitude, latitude),
+            point(${longitude}, ${latitude})
+          ) <= ${radiusInKm * 1000}
+        `)
+      },
       order: [
         literal(`
           ST_Distance_Sphere(
@@ -77,12 +80,12 @@ class EventRepository implements IBaseRepository<IEvent> {
           )
         `),
       ],
-      limit: 50,
+      limit: 4,
     });
 
     console.log(events);
     
-    return events as R;
+    return events as R;
   }
 
 

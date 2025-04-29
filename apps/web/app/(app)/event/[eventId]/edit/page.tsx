@@ -211,9 +211,9 @@ const Page = () => {
                   <SelectContent>
                     <SelectItem value="Conference & Seminars">Conference & Seminars</SelectItem>  
                     <SelectItem value="Workshops & Training">Workshops & Training</SelectItem>
-                    <SelectItem value="Meetup & Networking">Meetups & Networking</SelectItem>
-                    <SelectItem value="Concert & Live Music">Concerts & Live Music</SelectItem>
-                    <SelectItem value="Cultural & Festival">Cultural & Festivals</SelectItem>
+                    <SelectItem value="Meetups & Networking">Meetups & Networking</SelectItem>
+                    <SelectItem value="Concerts & Live Music">Concerts & Live Music</SelectItem>
+                    <SelectItem value="Cultural & Festivals">Cultural & Festivals</SelectItem>
                     <SelectItem value="Sports & Fitness">Sports & Fitness</SelectItem>
                     <SelectItem value="Exhibition & Expos">Exhibitions & Expos</SelectItem>
                     <SelectItem value="Food & Drinks">Food & Drink Events</SelectItem>

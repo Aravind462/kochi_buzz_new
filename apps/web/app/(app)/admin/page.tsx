@@ -1,10 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Button } from "@repo/frontend/components/ui/button";
 import { eventServices } from "../../../services/eventServices";
 import { IEvent } from "@repo/types/lib/schema/event";
-import { FaCheck, FaTimes, FaTrash } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { notificationServices } from "../../../services/notificationServices";
 import { userServices } from "../../../services/userServices";
@@ -12,6 +10,7 @@ import { reportServices } from "../../../services/reportServices";
 import { IReport } from "@repo/types/lib/schema/report";
 import DeleteConfirmation from "@repo/frontend/components/DeleteConfirmation";
 import ApprovalConfirmation from "@repo/frontend/components/ApprovalConfirmation";
+import { toast } from "sonner";
 
 const AdminPanel: React.FC = () => {
   const router = useRouter();
@@ -71,6 +70,7 @@ const AdminPanel: React.FC = () => {
       console.log(eventResponse);
 
       if (eventResponse) {
+        toast.success("Event Approved successfully");
         setPendingEvents((prev) =>
           prev.filter((event) => event.id !== Number(eventId))
         );
@@ -92,6 +92,7 @@ const AdminPanel: React.FC = () => {
   const handleReject = async (eventId: string) => {
     try {
       await eventServices.update(eventId, { status: "Rejected" });
+      toast.success("Event Rejected successfully");
       setPendingEvents((prev) =>
         prev.filter((event) => event.id !== Number(eventId))
       );
@@ -102,7 +103,8 @@ const AdminPanel: React.FC = () => {
 
   const handleDeleteReported = async (eventId: string) => {
     try {
-      await eventServices.delete(eventId);      
+      await eventServices.delete(eventId);
+      toast.success("Event deleted successfully");      
       setReportedEvents((prev) =>
         prev.filter((event) => event.id !== Number(eventId))
       );
