@@ -37,7 +37,7 @@ export const useQuery = <T = unknown, R = T, E extends Error = Error>(
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState<R | undefined>(defaultValue);
   const [error, setError] = useState<E>();
-  const timeIntervalRef = useRef<NodeJS.Timeout>();
+  const timeIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     if (prevDeps.current !== deps && resetOnDepChange) {

@@ -10,6 +10,8 @@
   "devDependencies": {
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
+    "@typescript-eslint/parser": "^8.31.1",
+    "eslint-plugin-turbo": "^2.5.2",
     "prettier": "^3.2.5",
     "turbo": "latest"
   },

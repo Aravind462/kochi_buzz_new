@@ -6,13 +6,14 @@ import React, { PropsWithChildren, useContext, useMemo, useState } from "react";
 import { PageLoader } from "@repo/frontend/components/PageLoader";
 import { useQuery } from "../hooks/useQuery";
 import { ICurrentUser } from "../types";
+import { IUser } from "@repo/types/lib/schema/user";
 
 export const userContext = React.createContext<IUserContext>({
   user: undefined,
 });
 
 interface IUserContext {
-  user: ICurrentUser;
+  user: IUser;
 }
 
 export const UserProvider: React.FC<PropsWithChildren> = ({ children }) => {
@@ -25,7 +26,7 @@ export const UserProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
   const [response, isFetchingUser] = useQuery(userServices.getCurrentUser, []);
 
-  const user = response?.user;
+  const user = response;
 
   const value: IUserContext = useMemo(() => ({ user }), [user]);
 

@@ -1,11 +1,11 @@
 "use client";
 
 import { mappls, mappls_plugin } from "mappls-web-maps";
-import { useEffect, useRef, useState } from "react";
+import { JSX, useEffect, useRef, useState } from "react";
 const mapplsClassObject = new mappls();
 const mapplsPluginObject = new mappls_plugin();
 
-const MarkerPlugin = ({ map, eLoc, setLatLng, markerRef }: any) => {
+const MarkerPlugin = ({ map, eLoc, setLatLng, markerRef }: any): JSX.Element | null => {
     useEffect(() => {
         if (!map || !eLoc) return;
 

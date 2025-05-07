@@ -5,6 +5,7 @@ import "@repo/frontend/globals.css";
 import { AppLayout } from "../components/appLayout/AppLayout";
 import { UserProvider } from "../providers/UserContext";
 import { Toaster } from "@repo/frontend/components/ui/sonner";
+import { JSX } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 

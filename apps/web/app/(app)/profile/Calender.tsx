@@ -7,7 +7,7 @@ import { createEventModalPlugin } from '@schedule-x/event-modal'
 import '@schedule-x/theme-default/dist/calendar.css'
 import { useRouter } from 'next/navigation';
 
-const Calender = ({ calendarEvents }: { calendarEvents: CalendarEventExternal }) => {
+const Calender = ({ calendarEvents }: any) => {
   const router = useRouter();
   
   const calendar = useNextCalendarApp({
